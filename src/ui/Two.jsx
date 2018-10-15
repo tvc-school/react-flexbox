@@ -17,6 +17,7 @@ const directionOptions = ['row', 'column']
 const justifyOptions = ['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly']
 const alignItemsOptions = ['flex-start', 'flex-end', 'center', 'stretch', 'baseline']
 const alignContentOptions = ['flex-start', 'flex-end', 'center', 'stretch', 'space-between', 'space-around']
+const wrapOptions = ['wrap', 'nowrap']
 
 class Two extends React.Component {
   state = {
@@ -46,13 +47,16 @@ class Two extends React.Component {
 
   render() {
     const { alignItems, alignContent, direction, justifyContent, numItems, wrap } = this.state
+
     const { classes } = this.props
+
     const style = {
       flexFlow: `${direction} ${wrap}`,
       justifyContent,
       alignItems,
       alignContent,
     }
+
     return (
       <div className={classes.two}>
         <Paper className={classes.container} style={style}>
@@ -62,20 +66,47 @@ class Two extends React.Component {
         </Paper>
         <Paper className={classes.controls} elevation={0}>
           <div className={classes.numItems}>
-            <TextField
-              id="numItems"
-              name='numItems'
-              label="Number of items"
-              value={numItems}
-              onChange={this.handleChange}
-              type="number"
-              // className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="normal"
-            />
+            <div>
+              <TextField
+                id="numItems"
+                name='numItems'
+                label="Number of items"
+                value={numItems}
+                onChange={this.handleChange}
+                type="number"
+                // className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                margin="normal"
+                className={classes.numItemsTextField}
+              />
+            </div>
+            <div>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">wrap</FormLabel>
+                <RadioGroup
+                  row
+                  name="wrap"
+                  aria-label="wrap"
+                  className={classes.group}
+                  value={wrap}
+                  onChange={this.handleChange}
+                >
+                  {
+                    wrapOptions.map(o => (
+                      <FormControlLabel
+                        value={o}
+                        control={<Radio color='primary' />}
+                        label={o}
+                      />
+                    ))
+                  }
+                </RadioGroup>
+              </FormControl>
+            </div>
           </div>
+
           <div>
             <FormControl component="fieldset">
               <FormLabel component="legend">direction</FormLabel>
@@ -207,7 +238,10 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     paddingBottom: theme.spacing.unit * 3,
-  }
+  },
+  numItemsTextField: {
+    marginRight: 100
+  },
 })
 
 
